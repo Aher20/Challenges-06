@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const morgan = require('morgan');
 const router = require('./routes');
 const cors = require('cors');
 const Sentry = require('@sentry/node');
