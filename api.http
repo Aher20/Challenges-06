@@ -1,0 +1,153 @@
+###
+// Home
+GET http://localhost:8000
+
+###
+// Get all products
+GET http://localhost:8000/products
+
+### Get detail products
+GET http://localhost:8000/products/1
+
+### Create data products
+POST http://localhost:8000/products
+Content-Type: application/json
+
+{
+    "name": "Chocolate Cake",
+    "quantity": 20
+}
+
+### Update data products
+PUT http://localhost:8000/products/2
+Content-Type: application/json
+
+{
+    "name": "Blue Cake"
+    //"quantity": "Cara pemula"
+}
+
+### Delete data products
+DELETE  http://localhost:8000/products/1
+
+
+
+###
+// Get all suppliers
+GET http://localhost:8000/suppliers
+
+### Get detail suppliers
+GET http://localhost:8000/suppliers/1
+
+### Create data suppliers
+POST http://localhost:8000/suppliers
+Content-Type: application/json
+
+{
+    "name": "Velvet Store",
+    "address": "Surabaya_id"
+}
+
+### Update data suppliers
+PUT http://localhost:8000/suppliers/1
+Content-Type: application/json
+
+{
+    "name": "Loli"
+    //"address": "Cara pemula"
+}
+
+### Delete data suppliers
+DELETE  http://localhost:8000/suppliers/1
+
+
+
+
+###
+// Get all components
+GET http://localhost:8000/components
+
+### Get detail components
+GET http://localhost:8000/components/1
+
+### Create data components
+POST http://localhost:8000/components
+Content-Type: application/json
+
+{
+    "name": "Lilin",
+    "description": "Cara Kedua"
+}
+
+### Update data components
+PUT http://localhost:8000/components/1
+Content-Type: application/json
+
+{
+    "name": "Papan"
+    //"description": "Cara pemula"
+}
+
+### Delete data components
+DELETE  http://localhost:8000/components/1
+
+
+
+
+###
+// Get all product-components
+GET http://localhost:8000/product-components
+
+### Get detail product-components
+GET http://localhost:8000/product-components/2
+
+### Create data product-components
+POST http://localhost:8000/product-components
+Content-Type: application/json
+
+{
+    "id_product": 2,
+    "id_component": 2
+}
+
+### Update data product-components
+PUT http://localhost:8000/product-components/1
+Content-Type: application/json
+
+{
+    "id_product": 2,
+    "id_component": 2
+}
+
+### Delete data product-components
+DELETE  http://localhost:8000/product-components/1
+
+
+
+###
+// Get all component-suppliers
+GET http://localhost:8000/component-suppliers
+
+### Get detail component-suppliers
+GET http://localhost:8000/component-suppliers/2
+
+### Create data component-suppliers
+POST http://localhost:8000/component-suppliers
+Content-Type: application/json
+
+{
+    "id_component": 2,
+    "id_supplier": 2
+}
+
+### Update data component-suppliers
+PUT http://localhost:8000/component-suppliers/1
+Content-Type: application/json
+
+{
+    "id_component": 2,
+    "id_supplier": 2
+}
+
+### Delete data component-suppliers
+DELETE  http://localhost:8000/component-suppliers/1

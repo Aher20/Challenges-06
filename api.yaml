@@ -1,0 +1,1595 @@
+openapi: 3.0.0
+info:
+  title: challenge-05
+  description: |-
+    Aplikasi challenge-05
+  contact:
+    email: aher@ptn.mail.com
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Test Challenge-05
+tags:
+  - name: Products
+    description: Product Data
+  - name: Components
+    description: Component Data
+  - name: Suppliers
+    description: Supplier Data
+  - name: Product_Components
+    description: Product_Components Data
+  - name: Component_Suppliers
+    description: Component_Suppliers Data
+
+paths:
+  /products:
+    get:
+      tags:
+        - Products
+      summary: Mendapatkan seluruh data product
+      description: Mendapatkan seluruh data product (desc)
+      responses:
+        "200":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        quantity:
+                          type: integer
+    post:
+      tags:
+        - Products
+      summary: Mendaftarkan product yang akan dijual
+      description: Mendaftarkan product yang akan dijual (desc)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Red Velvet
+                quantity:
+                  type: integer
+                  example: 10
+      responses:
+        "201":
+          description: Success Create Product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Red Velvet
+                      quantity:
+                        type: integer
+                        example: 10
+        "400":
+          description: Error from user
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: name is required!
+                      data: 
+                        type: object
+                        example: null
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: quantity is required!
+                      data: 
+                        type: object
+                        example: null
+              examples:
+                no name:
+                  summary: If name is doesn't exist
+                  value:
+                    status: false
+                    message: name is required!
+                    data: {}
+                no quantity:
+                  summary: If quantity is doesn't exist
+                  value:
+                    status: false
+                    message: quantity is required!
+                    data: {}
+  /products/{id}:
+    get:
+      tags:
+        - Products
+      summary: Mendapatkan detail data product
+      description: Mendapatkan detail data product (desc)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: id of product
+      responses:
+        "200":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      quantity:
+                        type: integer
+        "404":
+          description: Error from User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: can't find product with id ${id}!
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      quantity:
+                        type: integer
+    put:
+      tags:
+        - Products
+      summary: Meng-update data product
+      description: Meng-update data product (desc)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: id of product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Roti Bulat
+                quantity:
+                  type: integer
+                  example: 10
+      responses:
+        "201":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: integer
+                    example: null 
+        "404":
+          description: Error from User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: can't find product with id ${id}!
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      quantity:
+                        type: integer               
+    delete:
+      tags:
+        - Products
+      summary: Menghapus data product
+      description: Menghapus data product (desc)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: id of product
+      responses:
+        "201":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: object
+        "404":
+          description: Error from User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: can't find product with id ${id}!
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      quantity:
+                        type: integer
+  /components:
+    get:
+      tags:
+        - Components
+      summary: Mendapatkan seluruh data component
+      description: Mendapatkan seluruh data component (desc)
+      responses:
+        "200":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        description:
+                          type: string
+    post:
+      tags:
+        - Components
+      summary: Mendaftarkan component pada product
+      description: Mendaftarkan component pada product (desc)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Pisau
+                description:
+                  type: string
+                  example: Alat pemotong bahan
+      responses:
+        "201":
+          description: Success Create Component
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Pisau
+                      description:
+                        type: string
+                        example: Alat pemotong bahan
+        "400":
+          description: Error from user
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: name is required!
+                      data: 
+                        type: object
+                        example: null
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: quantity is required!
+                      data: 
+                        type: object
+                        example: null
+              examples:
+                no name:
+                  summary: If name is doesn't exist
+                  value:
+                    status: false
+                    message: name is required!
+                    data: {}
+                no quantity:
+                  summary: If quantity is doesn't exist
+                  value:
+                    status: false
+                    message: quantity is required!
+                    data: {}
+  /components/{id}:
+    get:
+      tags:
+        - Components
+      summary: Mendapatkan detail data component
+      description: Mendapatkan detail data component (desc)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: id of component
+      responses:
+        "200":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      description:
+                        type: string
+        "404":
+          description: Error from User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: can't find component with id ${id}!
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      description:
+                        type: string
+    put:
+      tags:
+        - Components
+      summary: Meng-update data component
+      description: Meng-update data component (desc)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: id of component
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Pisau
+                description:
+                  type: string
+                  example: Alat pemotong bahan
+      responses:
+        "201":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: integer
+                    example: null 
+        "404":
+          description: Error from User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: can't find component with id ${id}!
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      description:
+                        type: string               
+    delete:
+      tags:
+        - Components
+      summary: Menghapus data component
+      description: Menghapus data component (desc)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: id of component
+      responses:
+        "201":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: object
+        "404":
+          description: Error from User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: can't find component with id ${id}!
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      description:
+                        type: string
+  /suppliers:
+    get:
+      tags:
+        - Suppliers
+      summary: Mendapatkan seluruh data supplier
+      description: Mendapatkan seluruh data supplier (desc)
+      responses:
+        "200":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        address:
+                          type: string
+    post:
+      tags:
+        - Suppliers
+      summary: Mendaftarkan supplier pada component product
+      description: Mendaftarkan supplier pada component product (desc)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Holland
+                address:
+                  type: string
+                  example: Jl. Jend. Sudirman Kav.5
+      responses:
+        "201":
+          description: Success Create Supplier
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Holland
+                      address:
+                        type: string
+                        example: Jl. Jend. Sudirman Kav.5
+        "400":
+          description: Error from user
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: name is required!
+                      data: 
+                        type: object
+                        example: null
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: address is required!
+                      data: 
+                        type: object
+                        example: null
+              examples:
+                no name:
+                  summary: If name is doesn't exist
+                  value:
+                    status: false
+                    message: name is required!
+                    data: {}
+                no quantity:
+                  summary: If address is doesn't exist
+                  value:
+                    status: false
+                    message: quantity is required!
+                    data: {}
+  /suppliers/{id}:
+    get:
+      tags:
+        - Suppliers
+      summary: Mendapatkan detail data supplier
+      description: Mendapatkan detail data supplier (desc)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: id of supplier
+      responses:
+        "200":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      address:
+                        type: string
+        "404":
+          description: Error from User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: can't find supplier with id ${id}!
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      address:
+                        type: string
+    put:
+      tags:
+        - Suppliers
+      summary: Meng-update data supplier
+      description: Meng-update data supplier (desc)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: id of supplier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Holland
+                address:
+                  type: string
+                  example: Jl. Jend. Sudirman Kav.5
+      responses:
+        "201":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: integer
+                    example: null 
+        "404":
+          description: Error from User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: can't find supplier with id ${id}!
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      address:
+                        type: string               
+    delete:
+      tags:
+        - Suppliers
+      summary: Menghapus data supplier
+      description: Menghapus data supplier (desc)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: id of supplier
+      responses:
+        "201":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: object
+        "404":
+          description: Error from User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: can't find supplier with id ${id}!
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      address:
+                        type: string
+  /product-components:
+    get:
+      tags:
+        - Product_Components
+      summary: Mendapatkan seluruh data product_component
+      description: Mendapatkan seluruh data product_component (desc)
+      responses:
+        "200":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        id_product:
+                          type: integer
+                        id_component:
+                          type: integer
+    post:
+      tags:
+        - Product_Components
+      summary: Mendaftarkan product_component
+      description: Mendaftarkan product_component (desc)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_product:
+                  type: integer
+                  example: 1
+                id_component:
+                  type: integer
+                  example: 1
+      responses:
+        "201":
+          description: Success Create Product_Components
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      id_product:
+                        type: integer
+                        example: 1
+                      id_component:
+                        type: integer
+                        example: 1
+
+        "400":
+          description: Error from user
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: id_product is required!
+                      data: 
+                        type: object
+                        example: null
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: id_component is required!
+                      data: 
+                        type: object
+                        example: null
+              examples:
+                no id_product:
+                  summary: If id_product is doesn't exist
+                  value:
+                    status: false
+                    message: id_product is required!
+                    data: {}
+                no id_component:
+                  summary: If id_component is doesn't exist
+                  value:
+                    status: false
+                    message: id_component is required!
+                    data: {}
+        "404":
+          description: Error from user
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: product not found!
+                      data: 
+                        type: object
+                        example: null
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: product not found!
+                      data: 
+                        type: object
+                        example: null
+              examples:
+                no product:
+                  summary: If product is doesn't exist
+                  value:
+                    status: false
+                    message: product not found!
+                    data: {}
+                no component:
+                  summary: If component is doesn't exist
+                  value:
+                    status: false
+                    message: component not found!
+                    data: {}            
+  /product-components/{id}:
+    get:
+      tags:
+        - Product_Components
+      summary: Mendapatkan detail data product_component
+      description: Mendapatkan detail data product_component (desc)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: id of product_component
+      responses:
+        "200":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      id_product:
+                        type: integer
+                      id_component:
+                        type: integer
+        "404":
+          description: Error from User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: can't find product_components with id ${id}!
+                  data: 
+                    type: object
+    put:
+      tags:
+        - Product_Components
+      summary: Meng-update data product_component
+      description: Meng-update data product_component (desc)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: id of product_component
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_product:
+                  type: integer
+                  example: 1
+                id_component:
+                  type: integer
+                  example: 1
+      responses:
+        "201":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: integer
+                    example: null 
+        "404":
+          description: Error from User
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: product not found!
+                      data: 
+                        type: object
+                        example: null
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: product not found!
+                      data: 
+                        type: object
+                        example: null
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: can't find product_components with id ${id}!
+                      data: 
+                        type: object
+              examples:
+                no product:
+                  summary: If product is doesn't exist
+                  value:
+                    status: false
+                    message: product not found!
+                    data: {}
+                no component:
+                  summary: If component is doesn't exist
+                  value:
+                    status: false
+                    message: component not found!
+                    data: {}  
+                updated [0] == 0 failed:
+                  summary: If updated zero array equal to zero is failed updated
+                  value:
+                    status: false
+                    message: can't find product_component with id ${id}!
+                    data: {}
+    delete:
+      tags:
+        - Product_Components
+      summary: Menghapus data product_component
+      description: Menghapus data product_component (desc)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: id of product_component
+      responses:
+        "201":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: object
+        "404":
+          description: Error from User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: can't find product_component with id ${id}!
+                  data: 
+                    type: object
+  /component-suppliers:
+    get:
+      tags:
+        - Component_Suppliers
+      summary: Mendapatkan seluruh data component_supplier
+      description: Mendapatkan seluruh data component_supplier (desc)
+      responses:
+        "200":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        id_component:
+                          type: integer
+                        id_supplier:
+                          type: integer
+    post:
+      tags:
+        - Component_Suppliers
+      summary: Mendaftarkan component_supplier
+      description: Mendaftarkan component_supplier (desc)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_component:
+                  type: integer
+                  example: 1
+                id_supplier:
+                  type: integer
+                  example: 1
+      responses:
+        "201":
+          description: Success Create Component_Suppliers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      id_component:
+                        type: integer
+                        example: 1
+                      id_supplier:
+                        type: integer
+                        example: 1
+        "400":
+          description: Error from user
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: id_component is required!
+                      data: 
+                        type: object
+                        example: null
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: id_supplier is required!
+                      data: 
+                        type: object
+                        example: null
+              examples:
+                no id_component:
+                  summary: If id_component is doesn't exist
+                  value:
+                    status: false
+                    message: id_component is required!
+                    data: {}
+                no id_supplier:
+                  summary: If id_supplier is doesn't exist
+                  value:
+                    status: false
+                    message: id_supplier is required!
+                    data: {}
+        "404":
+          description: Error from user
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: component not found!
+                      data: 
+                        type: object
+                        example: null
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: supplier not found!
+                      data: 
+                        type: object
+                        example: null
+              examples:
+                no component:
+                  summary: If component is doesn't exist
+                  value:
+                    status: false
+                    message: component not found!
+                    data: {}     
+                no supplier:
+                  summary: If supplier is doesn't exist
+                  value:
+                    status: false
+                    message: supplier not found!
+                    data: {}       
+  /component-suppliers/{id}:
+    get:
+      tags:
+        - Component_Suppliers
+      summary: Mendapatkan detail data component_supplier
+      description: Mendapatkan detail data component_supplier (desc)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: id of component_supplier
+      responses:
+        "200":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      id_component:
+                        type: integer
+                      id_supplier:
+                        type: integer
+        "404":
+          description: Error from User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: can't find component_supplier with id ${id}!
+                  data: 
+                    type: object
+    put:
+      tags:
+        - Component_Suppliers
+      summary: Meng-update data component_supplier
+      description: Meng-update data component_supplier (desc)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: id of component_supplier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_component:
+                  type: integer
+                  example: 1
+                id_supplier:
+                  type: integer
+                  example: 1
+      responses:
+        "201":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: integer
+                    example: null 
+        "404":
+          description: Error from User
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: component not found!
+                      data: 
+                        type: object
+                        example: null
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: supplier not found!
+                      data: 
+                        type: object
+                        example: null
+                  - type: object
+                    properties:
+                      status:
+                        type: boolean
+                        example: false
+                      message:
+                        type: string
+                        example: can't find component_supplier with id ${id}!
+                      data: 
+                        type: object
+              examples:
+                no component:
+                  summary: If component is doesn't exist
+                  value:
+                    status: false
+                    message: component not found!
+                    data: {}  
+                no supplier:
+                  summary: If supplier is doesn't exist
+                  value:
+                    status: false
+                    message: supplier not found!
+                    data: {}
+                updated [0] == 0 failed:
+                  summary: If updated zero array equal to zero is failed updated
+                  value:
+                    status: false
+                    message: can't find component_supplier with id ${id}!
+                    data: {}
+    delete:
+      tags:
+        - Component_Suppliers
+      summary: Menghapus data component_supplier
+      description: Menghapus data component_supplier (desc)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: id of component_supplier
+      responses:
+        "201":
+          description: Success Validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: success
+                  data: 
+                    type: object
+        "404":
+          description: Error from User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: can't find component_supplier with id ${id}!
+                  data: 
+                    type: object
+ 
